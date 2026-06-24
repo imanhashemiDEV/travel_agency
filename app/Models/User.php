@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'password'])]
+#[Fillable(['name', 'email', 'password','mobile','national_code','is_active','is_admin','avatar'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -26,7 +26,44 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
+            'mobile_verified_at' => 'datetime',
+            'is_active' => 'boolean',
+            'is_admin' => 'boolean',
             'password' => 'hashed',
         ];
     }
+
+    // ===================== Relations =====================
+
+//    public function bookings(): HasMany
+//    {
+//        return $this->hasMany(Booking::class);
+//    }
+//
+//    public function payments(): HasMany
+//    {
+//        return $this->hasMany(Payment::class);
+//    }
+//
+//    public function reviews(): HasMany
+//    {
+//        return $this->hasMany(Review::class);
+//    }
+//
+//    public function couponUsages(): HasMany
+//    {
+//        return $this->hasMany(CouponUsage::class);
+//    }
+
+    // ===================== Scopes =====================
+
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
+
+
+    // ===================== Helpers =====================
+
+
 }
