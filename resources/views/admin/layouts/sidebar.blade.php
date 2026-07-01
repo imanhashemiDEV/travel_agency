@@ -25,10 +25,20 @@
                 داشبوردها
             </li>
             <li>
-                <a href="echo-dashboard-overview-1.html" class="side-menu__link side-menu__link--active ">
+                <a href="{{route('admin.panel.index')}}" class="side-menu__link side-menu__link--active ">
                     <i data-tw-merge="" data-lucide="gauge-circle" class="stroke-[1] w-5 h-5 side-menu__link__icon"></i>
-                    <div class="side-menu__link__title">تجارت الکترونیک</div>
+                    <div class="side-menu__link__title">صفحه اصلی</div>
                 </a>
+            </li>
+            <li>
+                <a href="{{route('admin.users.list')}}" class="side-menu__link side-menu__link--active ">
+                    <i data-tw-merge="" data-lucide="users" class="stroke-[1] w-5 h-5 side-menu__link__icon"></i>
+                    <div class="side-menu__link__title">کاربران</div>
+                </a>
+            </li>
+
+
+
 
             <li class="side-menu__divider">
                 ابزارک‌های کاربری
