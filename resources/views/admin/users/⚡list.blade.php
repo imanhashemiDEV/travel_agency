@@ -6,7 +6,7 @@ use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Layout('admin::layouts.master'), Title('لیست کاربران')]
+new #[Layout('admin::layouts.master',['breadcrumb'=>'لیست کاربران']), Title('لیست کاربران')]
 class extends Component {
 
     #[Computed]
@@ -28,12 +28,12 @@ class extends Component {
                             کاربران
                         </div>
                         <div class="flex flex-col gap-x-3 gap-y-2 sm:flex-row rtl:md:mr-auto ltr:md:ml-auto">
-                            <button data-tw-merge=""
+                            <a href="{{route('admin.users.create')}}" data-tw-merge=""
                                     class="transition duration-200 border shadow-sm inline-flex items-center justify-center py-2 px-3 rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed bg-primary border-primary text-white dark:border-primary group-[.mode--light]:!border-transparent group-[.mode--light]:!bg-white/[0.12] group-[.mode--light]:!text-slate-200">
                                 <i data-tw-merge="" data-lucide="pen-line"
                                    class="rtl:ml-2 ltr:mr-2 h-4 w-4 stroke-[1.3]"></i>
-                                افوزدن کاربری جدید
-                            </button>
+                                افزودن کاربری جدید
+                            </a>
                         </div>
                     </div>
                     <div class="mt-3.5 flex flex-col gap-8">
