@@ -5,28 +5,37 @@ use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 new #[Layout('admin::layouts.master', ['breadcrumb' => 'ایجاد کاربر']), Title('ایجاد کاربر')]
 class extends Component {
 
+    use WithFileUploads;
+
     #[Validate('required')]
-    public $name ;
+    public $name;
     #[Validate('required|min:11|unique:users,mobile')]
     public $mobile;
     #[Validate('required|min:4')]
-    public $password ;
+    public $password;
     #[Validate('required|email|unique:users,email')]
-    public $email ;
-    public $avatar ;
+    public $email;
+    public $avatar;
 
     public function createUser()
     {
         $this->validate();
 
+        if($this->avatar){
+           $name = $this->avatar->hashName();
+           $this->avatar->storeAs('images/users/',$name ,'public');
+        }
+
         User::query()->create([
             'name' => $this->name,
             'mobile' => $this->mobile,
             'email' => $this->email,
+            'avatar' => $name ?? null,
             'password' => Hash::make($this->password),
         ]);
 
@@ -112,7 +121,6 @@ class extends Component {
                                     <div class="mt-3 w-full flex-1 xl:mt-0">
                                         <div class="flex flex-col items-center">
                                             <input wire:model="email" data-tw-merge="" type="text"
-                                                   placeholder="brad.pitt@eltheme.ir"
                                                    class="disabled:bg-slate-100 disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent [&[readonly]]:bg-slate-100 [&[readonly]]:cursor-not-allowed [&[readonly]]:dark:bg-darkmode-800/50 [&[readonly]]:dark:border-transparent transition duration-200 ease-in-out w-full text-sm border-slate-200 shadow-sm rounded-md placeholder:text-slate-400/90 focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus:border-primary focus:border-opacity-40 dark:bg-darkmode-800 dark:border-transparent dark:focus:ring-slate-700 dark:focus:ring-opacity-50 dark:placeholder:text-slate-500/80 [&[type='file']]:border rtl:file:ml-4 ltr:file:mr-4 file:py-2 file:px-4 rtl:file:rounded-r-md ltr:file:rounded-l-md file:border-0 rtl:file:border-l-[1px] ltr:file:border-r-[1px] file:border-slate-100/10 file:text-sm file:font-semibold file:bg-slate-100 file:text-slate-500/70 hover:file:bg-200 group-[.form-inline]:flex-1 group-[.input-group]:rounded-none rtl:group-[.input-group]:[&:not(:first-child)]:border-r-transparent ltr:group-[.input-group]:[&:not(:first-child)]:border-l-transparent rtl:group-[.input-group]:first:rounded-r ltr:group-[.input-group]:first:rounded-l rtl:group-[.input-group]:last:rounded-l ltr:group-[.input-group]:last:rounded-r group-[.input-group]:z-10">
                                             @error('email')
                                             <span class="block text-danger my-2">{{ $message }}</span>

@@ -266,7 +266,7 @@ class extends Component {
                                                 <div class="flex items-center">
                                                     <div class="image-fit zoom-in h-9 w-9">
                                                         <img data-placement="top" title="{{$user->name}}"
-                                                             src="dist/images/users/user5-50x50.jpg"
+                                                             src="{{ $user->avatar ? url('images/users/'. $user->avatar) : url('panel/images/users/profile.jpg')}}"
                                                              class="tooltip cursor-pointer rounded-full shadow-[0px_0px_0px_2px_#fff,_1px_1px_5px_rgba(0,0,0,0.32)] dark:shadow-[0px_0px_0px_2px_#3f4865,_1px_1px_5px_rgba(0,0,0,0.32)]">
                                                     </div>
                                                     <div class="rtl:mr-3.5 ltr:ml-3.5">
