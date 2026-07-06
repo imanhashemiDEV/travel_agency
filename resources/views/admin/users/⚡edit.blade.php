@@ -8,7 +8,7 @@ use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
-new #[Layout('admin::layouts.master', ['breadcrumb' => 'ایجاد کاربر']), Title('ایجاد کاربر')]
+new #[Layout('admin::layouts.master', ['breadcrumb' => 'ویرایش کاربر']), Title('ویرایش کاربر')]
 class extends Component {
 
     use WithFileUploads;
@@ -53,6 +53,7 @@ class extends Component {
             'password' => $this->password ?  Hash::make($this->password) : $this->user->password,
         ]);
 
+        session()->flash('success','کاربر با موفقیت ویرایش شد');
         $this->redirectRoute('admin.users.list');
     }
 };

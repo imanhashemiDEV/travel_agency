@@ -39,6 +39,7 @@ class extends Component {
             'password' => Hash::make($this->password),
         ]);
 
+        session()->flash('success','کاربر با موفقیت ایجاد شد');
         $this->redirectRoute('admin.users.list');
     }
 };

@@ -148,22 +148,17 @@
                                 </button>
                                 <div data-transition="" data-selector=".show" data-enter="transition-all ease-linear duration-150" data-enter-from="absolute !mt-5 invisible opacity-0 translate-y-1" data-enter-to="!mt-1 visible opacity-100 translate-y-0" data-leave="transition-all ease-linear duration-150" data-leave-from="!mt-1 visible opacity-100 translate-y-0" data-leave-to="absolute !mt-5 invisible opacity-0 translate-y-1" class="dropdown-menu absolute z-[9999] hidden">
                                     <div data-tw-merge="" class="dropdown-content rounded-md border-transparent bg-white p-2 shadow-[0px_3px_10px_#00000017] dark:border-transparent dark:bg-darkmode-600 w-56 mt-1">
-                                        <a data-tw-toggle="modal" data-tw-target="#switch-account" class="flex items-center p-2 transition duration-300 ease-in-out rounded-md cursor-pointer hover:bg-slate-200/60 dark:bg-darkmode-600 dark:hover:bg-darkmode-400 dropdown-item"><i data-tw-merge="" data-lucide="toggle-left" class="stroke-[1] w-4 h-4 rtl:ml-2 ltr:mr-2"></i>
-                                            تغییر حساب</a>
-                                        <div class="h-px my-2 -mx-2 bg-slate-200/60 dark:bg-darkmode-400">
-                                        </div>
-                                        <a href="echo-settings-connected-services.html" class="flex items-center p-2 transition duration-300 ease-in-out rounded-md cursor-pointer hover:bg-slate-200/60 dark:bg-darkmode-600 dark:hover:bg-darkmode-400 dropdown-item"><i data-tw-merge="" data-lucide="settings" class="stroke-[1] w-4 h-4 rtl:ml-2 ltr:mr-2"></i>
-                                            خدمات متصل</a>
-                                        <a href="echo-settings-email-settings.html" class="flex items-center p-2 transition duration-300 ease-in-out rounded-md cursor-pointer hover:bg-slate-200/60 dark:bg-darkmode-600 dark:hover:bg-darkmode-400 dropdown-item"><i data-tw-merge="" data-lucide="inbox" class="stroke-[1] w-4 h-4 rtl:ml-2 ltr:mr-2"></i>
-                                            تنظیمات ایمیل</a>
-                                        <a href="echo-settings-security.html" class="flex items-center p-2 transition duration-300 ease-in-out rounded-md cursor-pointer hover:bg-slate-200/60 dark:bg-darkmode-600 dark:hover:bg-darkmode-400 dropdown-item"><i data-tw-merge="" data-lucide="lock" class="stroke-[1] w-4 h-4 rtl:ml-2 ltr:mr-2"></i>
-                                            بازنشانی رمز عبور</a>
-                                        <div class="h-px my-2 -mx-2 bg-slate-200/60 dark:bg-darkmode-400">
-                                        </div>
+
                                         <a href="echo-settings.html" class="flex items-center p-2 transition duration-300 ease-in-out rounded-md cursor-pointer hover:bg-slate-200/60 dark:bg-darkmode-600 dark:hover:bg-darkmode-400 dropdown-item"><i data-tw-merge="" data-lucide="users" class="stroke-[1] w-4 h-4 rtl:ml-2 ltr:mr-2"></i>
                                             اطلاعات پروفایل</a>
-                                        <a href="echo-login.html" class="flex items-center p-2 transition duration-300 ease-in-out rounded-md cursor-pointer hover:bg-slate-200/60 dark:bg-darkmode-600 dark:hover:bg-darkmode-400 dropdown-item"><i data-tw-merge="" data-lucide="power" class="stroke-[1] w-4 h-4 rtl:ml-2 ltr:mr-2"></i>
-                                            خروج</a>
+                                        <div class="h-px my-2 -mx-2 bg-slate-200/60 dark:bg-darkmode-400">
+                                        </div>
+                                        <a onclick="document.getElementById('logout').submit()" class="flex items-center p-2 transition duration-300 ease-in-out rounded-md cursor-pointer hover:bg-slate-200/60 dark:bg-darkmode-600 dark:hover:bg-darkmode-400 dropdown-item"><i data-tw-merge="" data-lucide="power" class="stroke-[1] w-4 h-4 rtl:ml-2 ltr:mr-2"></i>
+                                            خروج
+                                            <form id="logout" method="POST" action="{{route('logout')}}">
+                                                @csrf
+                                            </form>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -311,6 +306,7 @@
 <script src="{{url('panel/js/components/base/tippy.js')}}"></script>
 <script src="{{url('panel/js/themes/echo.js')}}"></script>
 <script src="{{url('panel/js/components/quick-search.js')}}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- END: Vendor JS Assets-->
 <!-- BEGIN: Pages, layouts, components JS Assets-->
 <!-- END: Pages, layouts, components JS Assets-->
