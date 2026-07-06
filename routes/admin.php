@@ -5,4 +5,4 @@ use Illuminate\Support\Facades\Route;
 Route::livewire('/', 'admin::panel.index')->name('admin.panel.index');
 Route::livewire('/users', 'admin::users.list')->name('admin.users.list');
 Route::livewire('/user_create', 'admin::users.create')->name('admin.users.create');
-Route::livewire('/user_edit', 'admin::users.edit')->name('admin.users.edit');
+Route::livewire('/user_edit/{user}', 'admin::users.edit')->name('admin.users.edit');

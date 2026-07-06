@@ -5,14 +5,21 @@ use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use Livewire\WithPagination;
 
-new #[Layout('admin::layouts.master',['breadcrumb'=>'لیست کاربران']), Title('لیست کاربران')]
+new #[Layout('admin::layouts.master', ['breadcrumb' => 'لیست کاربران']), Title('لیست کاربران')]
 class extends Component {
 
+    use WithPagination;
+    public $total_users;
+    public function mount()
+    {
+        $this->total_users = User::query()->get();
+    }
     #[Computed]
     public function users()
     {
-        return User::query()->get();
+        return User::query()->take(20)->latest()->paginate(10);
     }
 };
 ?>
@@ -29,7 +36,7 @@ class extends Component {
                         </div>
                         <div class="flex flex-col gap-x-3 gap-y-2 sm:flex-row rtl:md:mr-auto ltr:md:ml-auto">
                             <a href="{{route('admin.users.create')}}" data-tw-merge=""
-                                    class="transition duration-200 border shadow-sm inline-flex items-center justify-center py-2 px-3 rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed bg-primary border-primary text-white dark:border-primary group-[.mode--light]:!border-transparent group-[.mode--light]:!bg-white/[0.12] group-[.mode--light]:!text-slate-200">
+                               class="transition duration-200 border shadow-sm inline-flex items-center justify-center py-2 px-3 rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed bg-primary border-primary text-white dark:border-primary group-[.mode--light]:!border-transparent group-[.mode--light]:!bg-white/[0.12] group-[.mode--light]:!text-slate-200">
                                 <i data-tw-merge="" data-lucide="pen-line"
                                    class="rtl:ml-2 ltr:mr-2 h-4 w-4 stroke-[1.3]"></i>
                                 افزودن کاربری جدید
@@ -41,8 +48,8 @@ class extends Component {
                             <div class="grid grid-cols-4 gap-5">
                                 <div
                                     class="box col-span-4 rounded-[0.6rem] border border-dashed border-slate-300/80 p-5 shadow-sm md:col-span-2 xl:col-span-1">
-                                    <div class="text-base text-slate-500">کاربران ثبت‌نام کرده</div>
-                                    <div class="mt-1.5 text-2xl font-medium">457,204</div>
+                                    <div class="text-base text-slate-500">کاربران</div>
+                                    <div class="mt-1.5 text-2xl font-medium">{{$total_users->count()}}</div>
                                     <div
                                         class="absolute inset-y-0 rtl:left-0 ltr:right-0 rtl:ml-5 ltr:mr-5 flex flex-col justify-center">
                                         <div
@@ -56,7 +63,7 @@ class extends Component {
                                 <div
                                     class="box col-span-4 rounded-[0.6rem] border border-dashed border-slate-300/80 p-5 shadow-sm md:col-span-2 xl:col-span-1">
                                     <div class="text-base text-slate-500">فعال کاربران</div>
-                                    <div class="mt-1.5 text-2xl font-medium">122,721</div>
+                                    <div class="mt-1.5 text-2xl font-medium">{{$total_users->where('is_active',true)->count()}}</div>
                                     <div
                                         class="absolute inset-y-0 rtl:left-0 ltr:right-0 rtl:ml-5 ltr:mr-5 flex flex-col justify-center">
                                         <div
@@ -237,7 +244,7 @@ class extends Component {
                                         </td>
                                         <td data-tw-merge=""
                                             class="px-5 border-b dark:border-darkmode-300 border-t border-slate-200/60 bg-slate-50 py-4 font-medium text-slate-500">
-                                            سمت
+                                            موبایل
                                         </td>
                                         <td data-tw-merge=""
                                             class="px-5 border-b dark:border-darkmode-300 border-t border-slate-200/60 bg-slate-50 py-4 text-center font-medium text-slate-500">
@@ -245,7 +252,7 @@ class extends Component {
                                         </td>
                                         <td data-tw-merge=""
                                             class="px-5 border-b dark:border-darkmode-300 border-t border-slate-200/60 bg-slate-50 py-4 font-medium text-slate-500">
-                                            تاریخ پیوستن
+                                            تاریخ ثبت
                                         </td>
                                         <td data-tw-merge=""
                                             class="px-5 border-b dark:border-darkmode-300 w-20 border-t border-slate-200/60 bg-slate-50 py-4 text-center font-medium text-slate-500">
@@ -271,10 +278,10 @@ class extends Component {
                                                     </div>
                                                     <div class="rtl:mr-3.5 ltr:ml-3.5">
                                                         <a class="whitespace-nowrap font-medium" href="">
-                                                           {{$user->name}}
+                                                            {{$user->name}}
                                                         </a>
                                                         <div class="mt-0.5 whitespace-nowrap text-xs text-slate-500">
-                                                            {{$user->mobile}}
+                                                            {{$user->email}}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -282,11 +289,8 @@ class extends Component {
                                             <td data-tw-merge=""
                                                 class="px-5 border-b dark:border-darkmode-300 border-dashed py-4 dark:bg-darkmode-600">
                                                 <a class="whitespace-nowrap font-medium" href="">
-                                                    تحلیل‌گر داده
+                                                    {{$user->mobile}}
                                                 </a>
-                                                <div class="mt-0.5 whitespace-nowrap text-xs text-slate-500">
-                                                    تجزیه و تحلیل داده
-                                                </div>
                                             </td>
                                             <td data-tw-merge=""
                                                 class="px-5 border-b dark:border-darkmode-300 border-dashed py-4 dark:bg-darkmode-600">
@@ -301,7 +305,7 @@ class extends Component {
                                             <td data-tw-merge=""
                                                 class="px-5 border-b dark:border-darkmode-300 border-dashed py-4 dark:bg-darkmode-600">
                                                 <div class="whitespace-nowrap">
-                                                    {{$user->created_at}}
+                                                    {{\Hekmatinasser\Verta\Verta::instance($user->created_at)->formatJalaliDate()}}
                                                 </div>
                                             </td>
                                             <td data-tw-merge=""
@@ -324,14 +328,15 @@ class extends Component {
                                                              class="dropdown-menu absolute z-[9999] hidden">
                                                             <div data-tw-merge=""
                                                                  class="dropdown-content rounded-md border-transparent bg-white p-2 shadow-[0px_3px_10px_#00000017] dark:border-transparent dark:bg-darkmode-600 w-40">
-                                                                <a class="cursor-pointer flex items-center p-2 transition duration-300 ease-in-out rounded-md hover:bg-slate-200/60 dark:bg-darkmode-600 dark:hover:bg-darkmode-400 dropdown-item"><i
+                                                                <a href="{{route('admin.users.edit',$user->id)}}" class="cursor-pointer flex items-center p-2 transition duration-300 ease-in-out rounded-md hover:bg-slate-200/60 dark:bg-darkmode-600 dark:hover:bg-darkmode-400 dropdown-item"><i
                                                                         data-tw-merge="" data-lucide="check-square"
                                                                         class="stroke-[1] rtl:ml-2 ltr:mr-2 h-4 w-4"></i>
-                                                                    ویرایش</a>
-                                                                <a class="cursor-pointer flex items-center p-2 transition duration-300 ease-in-out rounded-md hover:bg-slate-200/60 dark:bg-darkmode-600 dark:hover:bg-darkmode-400 dropdown-item text-danger"><i
-                                                                        data-tw-merge="" data-lucide="trash2"
-                                                                        class="stroke-[1] rtl:ml-2 ltr:mr-2 h-4 w-4"></i>
-                                                                    حذف</a>
+                                                                    ویرایش
+                                                                </a>
+{{--                                                                <a class="cursor-pointer flex items-center p-2 transition duration-300 ease-in-out rounded-md hover:bg-slate-200/60 dark:bg-darkmode-600 dark:hover:bg-darkmode-400 dropdown-item text-danger"><i--}}
+{{--                                                                        data-tw-merge="" data-lucide="trash2"--}}
+{{--                                                                        class="stroke-[1] rtl:ml-2 ltr:mr-2 h-4 w-4"></i>--}}
+{{--                                                                    حذف</a>--}}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -343,62 +348,8 @@ class extends Component {
                                 </table>
                             </div>
                             <div
-                                class="flex-reverse flex flex-col-reverse flex-wrap items-center gap-y-2 p-5 sm:flex-row">
-                                <nav class="rtl:ml-auto ltr:mr-auto w-full flex-1 sm:w-auto">
-                                    <ul class="flex w-full rtl:ml-0 ltr:mr-0 rtl:sm:ml-auto ltr:sm:mr-auto sm:w-auto">
-                                        <li class="flex-1 sm:flex-initial">
-                                            <a data-tw-merge=""
-                                               class="transition duration-200 border items-center justify-center py-2 rounded-md cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed min-w-0 sm:min-w-[40px] shadow-none font-normal flex border-transparent text-slate-800 rtl:sm:ml-2 ltr:sm:mr-2 dark:text-slate-300 px-1 sm:px-3"><i
-                                                    data-tw-merge="" data-lucide="chevrons-left"
-                                                    class="stroke-[1] h-4 w-4 rtl:rotate-180"></i></a>
-                                        </li>
-                                        <li class="flex-1 sm:flex-initial">
-                                            <a data-tw-merge=""
-                                               class="transition duration-200 border items-center justify-center py-2 rounded-md cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed min-w-0 sm:min-w-[40px] shadow-none font-normal flex border-transparent text-slate-800 rtl:sm:ml-2 ltr:sm:mr-2 dark:text-slate-300 px-1 sm:px-3"><i
-                                                    data-tw-merge="" data-lucide="chevron-left"
-                                                    class="stroke-[1] h-4 w-4 rtl:rotate-180"></i></a>
-                                        </li>
-                                        <li class="flex-1 sm:flex-initial">
-                                            <a data-tw-merge=""
-                                               class="transition duration-200 border items-center justify-center py-2 rounded-md cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed min-w-0 sm:min-w-[40px] shadow-none font-normal flex border-transparent text-slate-800 rtl:sm:ml-2 ltr:sm:mr-2 dark:text-slate-300 px-1 sm:px-3">...</a>
-                                        </li>
-                                        <li class="flex-1 sm:flex-initial">
-                                            <a data-tw-merge=""
-                                               class="transition duration-200 border items-center justify-center py-2 rounded-md cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed min-w-0 sm:min-w-[40px] shadow-none font-normal flex border-transparent text-slate-800 rtl:sm:ml-2 ltr:sm:mr-2 dark:text-slate-300 px-1 sm:px-3">1</a>
-                                        </li>
-                                        <li class="flex-1 sm:flex-initial">
-                                            <a data-tw-merge=""
-                                               class="transition duration-200 border items-center justify-center py-2 rounded-md cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed min-w-0 sm:min-w-[40px] shadow-none font-normal flex border-transparent text-slate-800 rtl:sm:ml-2 ltr:sm:mr-2 dark:text-slate-300 px-1 sm:px-3 !box dark:bg-darkmode-400">2</a>
-                                        </li>
-                                        <li class="flex-1 sm:flex-initial">
-                                            <a data-tw-merge=""
-                                               class="transition duration-200 border items-center justify-center py-2 rounded-md cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed min-w-0 sm:min-w-[40px] shadow-none font-normal flex border-transparent text-slate-800 rtl:sm:ml-2 ltr:sm:mr-2 dark:text-slate-300 px-1 sm:px-3">3</a>
-                                        </li>
-                                        <li class="flex-1 sm:flex-initial">
-                                            <a data-tw-merge=""
-                                               class="transition duration-200 border items-center justify-center py-2 rounded-md cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed min-w-0 sm:min-w-[40px] shadow-none font-normal flex border-transparent text-slate-800 rtl:sm:ml-2 ltr:sm:mr-2 dark:text-slate-300 px-1 sm:px-3">...</a>
-                                        </li>
-                                        <li class="flex-1 sm:flex-initial">
-                                            <a data-tw-merge=""
-                                               class="transition duration-200 border items-center justify-center py-2 rounded-md cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed min-w-0 sm:min-w-[40px] shadow-none font-normal flex border-transparent text-slate-800 rtl:sm:ml-2 ltr:sm:mr-2 dark:text-slate-300 px-1 sm:px-3"><i
-                                                    data-tw-merge="" data-lucide="chevron-right"
-                                                    class="stroke-[1] h-4 w-4 rtl:rotate-180"></i></a>
-                                        </li>
-                                        <li class="flex-1 sm:flex-initial">
-                                            <a data-tw-merge=""
-                                               class="transition duration-200 border items-center justify-center py-2 rounded-md cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed min-w-0 sm:min-w-[40px] shadow-none font-normal flex border-transparent text-slate-800 rtl:sm:ml-2 ltr:sm:mr-2 dark:text-slate-300 px-1 sm:px-3"><i
-                                                    data-tw-merge="" data-lucide="chevrons-right"
-                                                    class="stroke-[1] h-4 w-4 rtl:rotate-180"></i></a>
-                                        </li>
-                                    </ul>
-                                </nav>
-                                <select data-tw-merge=""
-                                        class="disabled:bg-slate-100 disabled:cursor-not-allowed disabled:dark:bg-darkmode-800/50 [&[readonly]]:bg-slate-100 [&[readonly]]:cursor-not-allowed [&[readonly]]:dark:bg-darkmode-800/50 transition duration-200 ease-in-out w-full text-sm border-slate-200 shadow-sm py-2 px-3 rtl:pl-8 ltr:pr-8 focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus:border-primary focus:border-opacity-40 dark:bg-darkmode-800 dark:border-transparent dark:focus:ring-slate-700 dark:focus:ring-opacity-50 group-[.form-inline]:flex-1 rounded-[0.5rem] sm:w-20">
-                                    <option>10</option>
-                                    <option>25</option>
-                                    <option>35</option>
-                                    <option>50</option>
-                                </select>
+                                class="flex-reverse flex flex-col-reverse flex-wrap items-center justify-center gap-y-2 p-5 sm:flex-row">
+                                {{$this->users->links('admin.layouts.pagination')}}
                             </div>
                         </div>
                     </div>
