@@ -3,6 +3,7 @@
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
@@ -14,6 +15,8 @@ class extends Component {
     use WithPagination;
 
     public $search;
+    #[Validate('required')]
+    public $name;
 
     public function mount(): void
     {
@@ -29,6 +32,18 @@ class extends Component {
         $this->roles = Role::query()
             ->where('name', 'like', '%' . $this->search . '%')
             ->paginate(10);
+    }
+
+    public function createRole(): void
+    {
+        $this->validate();
+
+        Role::query()->create([
+            'name' => $this->name
+        ]);
+
+        session()->flash('success', 'نقش با موفقیت ایجاد شد');
+        $this->reset('name');
     }
 
     #[Computed]
@@ -63,7 +78,47 @@ class extends Component {
                                     </div>
                                 </div>
                             </div>
-                            <div class="overflow-auto xl:overflow-visible">
+
+                            <form wire:submit="createRole" class="box box--stacked flex flex-col m-2">
+                                <div class="p-7">
+                                    <div
+                                        class="mt-5 block flex-col pt-5 first:mt-0 first:pt-0 sm:flex xl:flex-row xl:items-center">
+                                        <div
+                                            class="mb-2 inline-block sm:mb-0 rtl:sm:ml-5 ltr:sm:mr-5 rtl:sm:text-left ltr:sm:text-right rtl:xl:ml-14 ltr:xl:mr-14 xl:w-60">
+                                            <div class="rtl:text-right ltr:text-left">
+                                                <div class="flex items-center">
+                                                    <div class="font-medium">عنوان نقش</div>
+                                                    <div
+                                                        class="rtl:mr-2.5 ltr:ml-2.5 rounded-md border border-slate-200 bg-slate-100 px-2 py-0.5 text-xs text-slate-500 dark:bg-darkmode-300 dark:text-slate-400">
+                                                        ضروری
+                                                    </div>
+                                                </div>
+                                                <div class="mt-1.5 text-xs leading-relaxed text-slate-500/80 xl:mt-3">
+                                                    عنوان نقش را وارد کنید
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mt-3 w-full flex gap-2 xl:mt-0">
+                                            <div class="flex flex-col flex-1 items-center">
+                                                <input wire:model="name" data-tw-merge="" type="text"
+                                                       class="disabled:bg-slate-100 disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent [&[readonly]]:bg-slate-100 [&[readonly]]:cursor-not-allowed [&[readonly]]:dark:bg-darkmode-800/50 [&[readonly]]:dark:border-transparent transition duration-200 ease-in-out w-full text-sm border-slate-200 shadow-sm rounded-md placeholder:text-slate-400/90 focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus:border-primary focus:border-opacity-40 dark:bg-darkmode-800 dark:border-transparent dark:focus:ring-slate-700 dark:focus:ring-opacity-50 dark:placeholder:text-slate-500/80 [&[type='file']]:border rtl:file:ml-4 ltr:file:mr-4 file:py-2 file:px-4 rtl:file:rounded-r-md ltr:file:rounded-l-md file:border-0 rtl:file:border-l-[1px] ltr:file:border-r-[1px] file:border-slate-100/10 file:text-sm file:font-semibold file:bg-slate-100 file:text-slate-500/70 hover:file:bg-200 group-[.form-inline]:flex-1 group-[.input-group]:rounded-none rtl:group-[.input-group]:[&:not(:first-child)]:border-r-transparent ltr:group-[.input-group]:[&:not(:first-child)]:border-l-transparent rtl:group-[.input-group]:first:rounded-r ltr:group-[.input-group]:first:rounded-l rtl:group-[.input-group]:last:rounded-l ltr:group-[.input-group]:last:rounded-r group-[.input-group]:z-10 first:rounded-b-none last:-mt-px last:rounded-t-none focus:z-10 rtl:first:md:rounded-l-none ltr:first:md:rounded-r-none rtl:first:md:rounded-br-md ltr:first:md:rounded-bl-md rtl:last:md:-mr-px ltr:last:md:-ml-px last:md:mt-0 rtl:last:md:rounded-r-none ltr:last:md:rounded-l-none rtl:last:md:rounded-tl-md ltr:last:md:rounded-tr-md [&:not(:first-child):not(:last-child)]:-mt-px [&:not(:first-child):not(:last-child)]:rounded-none rtl:[&:not(:first-child):not(:last-child)]:md:-mr-px ltr:[&:not(:first-child):not(:last-child)]:md:-ml-px [&:not(:first-child):not(:last-child)]:md:mt-0">
+                                                @error('name')
+                                                <span class="block text-danger my-2">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                            <button type="submit" data-tw-merge=""
+                                                    class="transition duration-200 bg-rose-500 border shadow-sm inline-flex items-center justify-center py-2 rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed text-primary dark:border-primary [&:hover:not(:disabled)]:bg-primary/10 w-full border-primary/50 px-10 md:w-auto">
+                                                <i data-tw-merge="" data-lucide="pocket"
+                                                   class="rtl:-mr-2 ltr:-ml-2 rtl:ml-2 ltr:mr-2 h-4 w-4 stroke-[1.3]"></i>
+                                                ثبت
+                                            </button>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <div class="overflow-auto xl:overflow-visible m-2">
                                 <table data-tw-merge=""
                                        class="w-full rtl:text-right ltr:text-left border-b border-slate-200/60">
                                     <thead data-tw-merge="" class="">
