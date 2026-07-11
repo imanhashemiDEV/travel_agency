@@ -100,7 +100,7 @@ class extends Component {
                                     </div>
                                 </div>
                             </div>
-
+                            @include('admin.layouts.waiting')
                             <form wire:submit="createRole" class="box box--stacked flex flex-col m-2">
                                 <div class="p-7">
                                     <div

@@ -123,6 +123,7 @@ class extends Component {
                                 </div>
                             </div>
                         </div>
+                        @include('admin.layouts.waiting')
                         <div class="box box--stacked flex flex-col">
                             <div class="flex flex-col gap-y-2 p-5 sm:flex-row sm:items-center">
                                 <div>

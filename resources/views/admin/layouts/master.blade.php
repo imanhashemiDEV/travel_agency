@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="{{url('panel/css/vendors/simplebar.css')}}">
     <link rel="stylesheet" href="{{url('panel/css/themes/echo.css')}}">
     <link rel="stylesheet" href="{{url('panel/css/app.css')}}">
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
     <!-- END: CSS Assets-->
 </head>
 <!-- END: Head -->
