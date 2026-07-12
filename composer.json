@@ -10,6 +10,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.3",
+        "codeat3/blade-eos-icons": "^1.16",
         "hekmatinasser/verta": "^9.0",
         "jantinnerezo/livewire-alert": "^4.2",
         "laravel/fortify": "^1.37",

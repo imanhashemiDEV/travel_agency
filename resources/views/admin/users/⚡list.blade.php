@@ -8,37 +8,34 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
 
-new #[Layout('admin::layouts.master', ['breadcrumb' => 'لیست کاربران']), Title('لیست کاربران')]
+new #[Layout('admin::layouts.master',['breadcrumb'=>'لیست کاربران']), Title('لیست کاربران')]
 class extends Component {
 
     use WithPagination;
-    public $total_users;
     public $search;
 
-    public function mount(): void
+    public function mount()
     {
-        $this->total_users = User::query()->get();
-
-        if(session()->has('success')){
+        if (session()->has('success')){
             LivewireAlert::text(session('success'))
                 ->success()
                 ->show();
         }
     }
 
-    public function searchUser(): void
+    public function searchUser()
     {
         $this->users = User::query()
-            ->where('name','like', '%' . $this->search . '%')
-            ->orWhere('email','like', '%' . $this->search . '%')
-            ->orWhere('mobile','like', '%' . $this->search . '%')
+            ->where('name','like' ,'%'. $this->search . '%')
+            ->orWhere('email','like' ,'%'. $this->search . '%')
+            ->orWhere('mobile','like' ,'%'. $this->search . '%')
             ->paginate(10);
     }
 
     #[Computed]
     public function users()
     {
-        return User::query()->take(20)->latest()->paginate(10);
+        return User::query()->take(20)->paginate(10);
     }
 };
 ?>
@@ -67,8 +64,8 @@ class extends Component {
                             <div class="grid grid-cols-4 gap-5">
                                 <div
                                     class="box col-span-4 rounded-[0.6rem] border border-dashed border-slate-300/80 p-5 shadow-sm md:col-span-2 xl:col-span-1">
-                                    <div class="text-base text-slate-500">کاربران</div>
-                                    <div class="mt-1.5 text-2xl font-medium">{{$total_users->count()}}</div>
+                                    <div class="text-base text-slate-500">کاربران ثبت‌نام کرده</div>
+                                    <div class="mt-1.5 text-2xl font-medium">457,204</div>
                                     <div
                                         class="absolute inset-y-0 rtl:left-0 ltr:right-0 rtl:ml-5 ltr:mr-5 flex flex-col justify-center">
                                         <div
@@ -82,7 +79,7 @@ class extends Component {
                                 <div
                                     class="box col-span-4 rounded-[0.6rem] border border-dashed border-slate-300/80 p-5 shadow-sm md:col-span-2 xl:col-span-1">
                                     <div class="text-base text-slate-500">فعال کاربران</div>
-                                    <div class="mt-1.5 text-2xl font-medium">{{$total_users->where('is_active',true)->count()}}</div>
+                                    <div class="mt-1.5 text-2xl font-medium">122,721</div>
                                     <div
                                         class="absolute inset-y-0 rtl:left-0 ltr:right-0 rtl:ml-5 ltr:mr-5 flex flex-col justify-center">
                                         <div
@@ -123,8 +120,8 @@ class extends Component {
                                 </div>
                             </div>
                         </div>
-                        @include('admin.layouts.waiting')
                         <div class="box box--stacked flex flex-col">
+                            @include('admin.layouts.waiting')
                             <div class="flex flex-col gap-y-2 p-5 sm:flex-row sm:items-center">
                                 <div>
                                     <div class="relative">
@@ -267,6 +264,10 @@ class extends Component {
                                             موبایل
                                         </td>
                                         <td data-tw-merge=""
+                                            class="px-5 border-b dark:border-darkmode-300 border-t border-slate-200/60 bg-slate-50 py-4 font-medium text-slate-500">
+                                            نقش
+                                        </td>
+                                        <td data-tw-merge=""
                                             class="px-5 border-b dark:border-darkmode-300 border-t border-slate-200/60 bg-slate-50 py-4 text-center font-medium text-slate-500">
                                             وضعیت
                                         </td>
@@ -308,9 +309,20 @@ class extends Component {
                                             </td>
                                             <td data-tw-merge=""
                                                 class="px-5 border-b dark:border-darkmode-300 border-dashed py-4 dark:bg-darkmode-600">
-                                                <a class="whitespace-nowrap font-medium" href="">
+                                                <a class="whitespace-nowrap font-medium">
                                                     {{$user->mobile}}
                                                 </a>
+                                            </td>
+                                            <td data-tw-merge=""
+                                                class="px-5 border-b dark:border-darkmode-300 border-dashed py-4 dark:bg-darkmode-600">
+                                                <a href="{{route('admin.users.user_roles',$user->id)}}" class="whitespace-nowrap font-medium">
+                                                    <x-eos-role-binding class="text-info mb-2 h-6 w-6" />
+                                                </a>
+                                                <ul>
+                                                    @foreach($user->roles as $role)
+                                                        <li class="text-sm list-disc">{{$role->name}}</li>
+                                                    @endforeach
+                                                </ul>
                                             </td>
                                             <td data-tw-merge=""
                                                 class="px-5 border-b dark:border-darkmode-300 border-dashed py-4 dark:bg-darkmode-600">
@@ -325,7 +337,7 @@ class extends Component {
                                             <td data-tw-merge=""
                                                 class="px-5 border-b dark:border-darkmode-300 border-dashed py-4 dark:bg-darkmode-600">
                                                 <div class="whitespace-nowrap">
-                                                    {{\Hekmatinasser\Verta\Verta::instance($user->created_at)->formatJalaliDate()}}
+                                                    {{\Hekmatinasser\Verta\Facades\Verta::instance($user->created_at)->formatJalaliDate()}}
                                                 </div>
                                             </td>
                                             <td data-tw-merge=""
@@ -348,7 +360,7 @@ class extends Component {
                                                              class="dropdown-menu absolute z-[9999] hidden">
                                                             <div data-tw-merge=""
                                                                  class="dropdown-content rounded-md border-transparent bg-white p-2 shadow-[0px_3px_10px_#00000017] dark:border-transparent dark:bg-darkmode-600 w-40">
-                                                                <a href="{{route('admin.users.edit',$user->id)}}" class="cursor-pointer flex items-center p-2 transition duration-300 ease-in-out rounded-md hover:bg-slate-200/60 dark:bg-darkmode-600 dark:hover:bg-darkmode-400 dropdown-item"><i
+                                                                <a href="{{route('admin.users.edit', $user->id)}}" class="cursor-pointer flex items-center p-2 transition duration-300 ease-in-out rounded-md hover:bg-slate-200/60 dark:bg-darkmode-600 dark:hover:bg-darkmode-400 dropdown-item"><i
                                                                         data-tw-merge="" data-lucide="check-square"
                                                                         class="stroke-[1] rtl:ml-2 ltr:mr-2 h-4 w-4"></i>
                                                                     ویرایش
@@ -369,7 +381,7 @@ class extends Component {
                             </div>
                             <div
                                 class="flex-reverse flex flex-col-reverse flex-wrap items-center justify-center gap-y-2 p-5 sm:flex-row">
-                                {{$this->users->links('admin.layouts.pagination')}}
+                                 {{$this->users->links('admin.layouts.pagination')}}
                             </div>
                         </div>
                     </div>
