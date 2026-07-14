@@ -25,23 +25,27 @@
                 داشبوردها
             </li>
             <li>
-                <a href="{{route('admin.panel.index')}}" class="side-menu__link @if(\Illuminate\Support\Facades\Route::is('admin.panel.index')) side-menu__link--active @endif ">
+                <a href="{{route('admin.panel.index')}}" class="side-menu__link @if(\Illuminate\Support\Facades\Route::is('admin.panel.index')) side-menu__link--active  @endif">
                     <i data-tw-merge="" data-lucide="gauge-circle" class="stroke-[1] w-5 h-5 side-menu__link__icon"></i>
                     <div class="side-menu__link__title">صفحه اصلی</div>
                 </a>
             </li>
+            @if(auth()->user()->isSuperAdmin() || auth()->user()->isUserAdmin())
             <li>
-                <a href="{{route('admin.users.list')}}" class="side-menu__link @if(\Illuminate\Support\Facades\Route::is('admin.users.list')) side-menu__link--active @endif">
+                <a href="{{route('admin.users.list')}}" class="side-menu__link @if(\Illuminate\Support\Facades\Route::is('admin.users.list')) side-menu__link--active  @endif">
                     <i data-tw-merge="" data-lucide="users" class="stroke-[1] w-5 h-5 side-menu__link__icon"></i>
                     <div class="side-menu__link__title">کاربران</div>
                 </a>
             </li>
+            @endif
+            @if(auth()->user()->isSuperAdmin())
             <li>
-                <a href="{{route('admin.roles.list')}}" class="side-menu__link @if(\Illuminate\Support\Facades\Route::is('admin.roles.list')) side-menu__link--active @endif">
+                <a href="{{route('admin.roles.list')}}" class="side-menu__link @if(\Illuminate\Support\Facades\Route::is('admin.roles.list')) side-menu__link--active  @endif">
                     <i data-tw-merge="" data-lucide="briefcase" class="stroke-[1] w-5 h-5 side-menu__link__icon"></i>
                     <div class="side-menu__link__title">نقش ها</div>
                 </a>
             </li>
+            @endif
             <!-- END: First Child -->
         </ul>
     </div>
