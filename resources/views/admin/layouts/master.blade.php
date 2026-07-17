@@ -46,10 +46,10 @@
                         <!-- BEGIN: Breadcrumb -->
                         <nav aria-label="breadcrumb" class="flex flex-1 xl:block">
                             <ol class="flex items-center text-theme-1 dark:text-slate-300 text-white/90">
-                                <li class="">
+                                <li class="relative rtl:mr-5 ltr:ml-5 rtl:pr-0.5 ltr:pl-0.5 ">
                                     <a href="{{route('admin.panel.index')}}">صفحه اصلی</a>
                                 </li>
-                                <li class="relative rtl:mr-5 ltr:ml-5 rtl:pr-0.5 ltr:pl-0.5 before:content-[''] before:w-[14px] before:h-[14px] before:bg-chevron-white before:transform rtl:before:rotate-[90deg] ltr:before:rotate-[-90deg] before:bg-[length:100%] rtl:before:-mr-[1.125rem] ltr:before:-ml-[1.125rem] before:absolute before:my-auto before:inset-y-0 dark:before:bg-chevron-white">
+                                <li class="relative rtl:mr-5 ltr:ml-5 rtl:pr-0.5 ltr:pl-0.5 before:content-[''] before:w-[14px] before:h-[14px] before:bg-chevron-white before:transform rtl:before:rotate-[90deg] ltr:before:rotate-[-90deg] before:bg-[length:100%] rtl:before:-mr-[1.125rem] ltr:before:-ml-[1.125rem] before:absolute before:my-auto before:inset-y-0 dark:before:bg-chevron-white text-white/70">
                                     {{$breadcrumb ?? ""}}
                                 </li>
                             </ol>
@@ -148,12 +148,12 @@
                                 </button>
                                 <div data-transition="" data-selector=".show" data-enter="transition-all ease-linear duration-150" data-enter-from="absolute !mt-5 invisible opacity-0 translate-y-1" data-enter-to="!mt-1 visible opacity-100 translate-y-0" data-leave="transition-all ease-linear duration-150" data-leave-from="!mt-1 visible opacity-100 translate-y-0" data-leave-to="absolute !mt-5 invisible opacity-0 translate-y-1" class="dropdown-menu absolute z-[9999] hidden">
                                     <div data-tw-merge="" class="dropdown-content rounded-md border-transparent bg-white p-2 shadow-[0px_3px_10px_#00000017] dark:border-transparent dark:bg-darkmode-600 w-56 mt-1">
-
-                                        <a href="echo-settings.html" class="flex items-center p-2 transition duration-300 ease-in-out rounded-md cursor-pointer hover:bg-slate-200/60 dark:bg-darkmode-600 dark:hover:bg-darkmode-400 dropdown-item"><i data-tw-merge="" data-lucide="users" class="stroke-[1] w-4 h-4 rtl:ml-2 ltr:mr-2"></i>
+                                        <a href="#" class="flex items-center p-2 transition duration-300 ease-in-out rounded-md cursor-pointer hover:bg-slate-200/60 dark:bg-darkmode-600 dark:hover:bg-darkmode-400 dropdown-item"><i data-tw-merge="" data-lucide="users" class="stroke-[1] w-4 h-4 rtl:ml-2 ltr:mr-2"></i>
                                             اطلاعات پروفایل</a>
                                         <div class="h-px my-2 -mx-2 bg-slate-200/60 dark:bg-darkmode-400">
                                         </div>
-                                        <a onclick="document.getElementById('logout').submit()" class="flex items-center p-2 transition duration-300 ease-in-out rounded-md cursor-pointer hover:bg-slate-200/60 dark:bg-darkmode-600 dark:hover:bg-darkmode-400 dropdown-item"><i data-tw-merge="" data-lucide="power" class="stroke-[1] w-4 h-4 rtl:ml-2 ltr:mr-2"></i>
+                                        <a onclick="document.getElementById('logout').submit()" class="flex items-center p-2 transition duration-300 ease-in-out rounded-md cursor-pointer hover:bg-slate-200/60 dark:bg-darkmode-600 dark:hover:bg-darkmode-400 dropdown-item">
+                                            <i data-tw-merge="" data-lucide="power" class="stroke-[1] w-4 h-4 rtl:ml-2 ltr:mr-2"></i>
                                             خروج
                                             <form id="logout" method="POST" action="{{route('logout')}}">
                                                 @csrf

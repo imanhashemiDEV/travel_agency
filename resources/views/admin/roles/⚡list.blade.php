@@ -56,11 +56,11 @@ class extends Component {
 
     public function updateRole()
     {
-      $this->validate([
-          'edit_name'=>'required'
-      ]);
+        $this->validate([
+            'edit_name'=>'required'
+        ]);
 
-      $role = Role::query()->find($this->editRole);
+        $role = Role::query()->find($this->editRole);
         $role->update([
             'name'=>$this->edit_name
         ]);
@@ -100,6 +100,7 @@ class extends Component {
                                     </div>
                                 </div>
                             </div>
+
                             @include('admin.layouts.waiting')
                             <form wire:submit="createRole" class="box box--stacked flex flex-col m-2">
                                 <div class="p-7">
